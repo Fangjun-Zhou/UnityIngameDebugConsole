@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 using UnityEngine.EventSystems;
 #if ENABLE_INPUT_SYSTEM && !ENABLE_LEGACY_INPUT_MANAGER
@@ -26,6 +27,18 @@ using Screen = UnityEngine.Device.Screen; // To support Device Simulator on Unit
 // An enum to represent filtered log types
 namespace IngameDebugConsole
 {
+	[System.Serializable]
+	public class OpenConsoleEvent : UnityEvent
+	{
+		
+	}
+
+	[System.Serializable]
+	public class CloseConsoleEvent : UnityEvent
+	{
+		
+	}
+	
 	public enum DebugLogFilter
 	{
 		None = 0,
@@ -95,6 +108,16 @@ namespace IngameDebugConsole
 		[HideInInspector]
 		private KeyCode toggleKey = KeyCode.BackQuote;
 #endif
+
+		[SerializeField]
+		[HideInInspector]
+		[Tooltip( "Call this event when the console is opened" )]
+		public OpenConsoleEvent openEvent;
+		
+		[SerializeField]
+		[HideInInspector]
+		[Tooltip( "Call this event when the console is closed" )]
+		public CloseConsoleEvent closeEvent;
 
 		[SerializeField]
 		[HideInInspector]
@@ -445,10 +468,16 @@ namespace IngameDebugConsole
 			{
 				if( toggleWithKey )
 				{
-					if( isLogWindowVisible )
+					if (isLogWindowVisible)
+					{
 						HideLogWindow();
+						closeEvent.Invoke();
+					}
 					else
+					{
 						ShowLogWindow();
+						openEvent.Invoke();
+					}
 				}
 			};
 

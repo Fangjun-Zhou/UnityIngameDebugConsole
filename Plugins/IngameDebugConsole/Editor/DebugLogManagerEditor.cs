@@ -23,6 +23,9 @@ namespace IngameDebugConsole
 		private SerializedProperty receiveLogcatLogsInAndroid;
 		private SerializedProperty logcatArguments;
 
+		private SerializedProperty openEvent;
+		private SerializedProperty closeEvent;
+
 		private void OnEnable()
 		{
 			singleton = serializedObject.FindProperty( "singleton" );
@@ -39,6 +42,8 @@ namespace IngameDebugConsole
 #else
 			toggleKey = serializedObject.FindProperty( "toggleKey" );
 #endif
+			openEvent = serializedObject.FindProperty( "openEvent" );
+			closeEvent = serializedObject.FindProperty( "closeEvent" );
 			enableSearchbar = serializedObject.FindProperty( "enableSearchbar" );
 			topSearchbarMinWidth = serializedObject.FindProperty( "topSearchbarMinWidth" );
 			clearCommandAfterExecution = serializedObject.FindProperty( "clearCommandAfterExecution" );
@@ -46,6 +51,7 @@ namespace IngameDebugConsole
 			showCommandSuggestions = serializedObject.FindProperty( "showCommandSuggestions" );
 			receiveLogcatLogsInAndroid = serializedObject.FindProperty( "receiveLogcatLogsInAndroid" );
 			logcatArguments = serializedObject.FindProperty( "logcatArguments" );
+			
 		}
 
 		public override void OnInspectorGUI()
@@ -71,7 +77,10 @@ namespace IngameDebugConsole
 			EditorGUILayout.PropertyField( toggleWithKey );
 			if( toggleWithKey.boolValue )
 				DrawSubProperty( toggleKey );
-
+			
+			DrawSubProperty(openEvent);
+			DrawSubProperty(closeEvent);
+			
 			EditorGUILayout.PropertyField( enableSearchbar );
 			if( enableSearchbar.boolValue )
 				DrawSubProperty( topSearchbarMinWidth );
