@@ -471,12 +471,10 @@ namespace IngameDebugConsole
 					if (isLogWindowVisible)
 					{
 						HideLogWindow();
-						closeEvent.Invoke();
 					}
 					else
 					{
 						ShowLogWindow();
-						openEvent.Invoke();
 					}
 				}
 			};
@@ -802,6 +800,8 @@ namespace IngameDebugConsole
 
 			if( OnLogWindowShown != null )
 				OnLogWindowShown();
+			
+			openEvent.Invoke();
 		}
 
 		public void HideLogWindow()
@@ -820,6 +820,8 @@ namespace IngameDebugConsole
 
 			if( OnLogWindowHidden != null )
 				OnLogWindowHidden();
+			
+			closeEvent.Invoke();
 		}
 
 		// Command field input is changed, check if command is submitted
